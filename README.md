@@ -11,21 +11,20 @@ skill-factory/
 ├── AGENTS.md           # 项目说明与技能创建规范
 ├── README.md           # 本文件
 ├── .gitignore          # Git 排除规则
-├── skills/             # 技能源文件目录
-└── .opencode/
-    └── skills/         # 技能副本目录（与 skills/ 保持同步）
+└── skills/             # 技能源文件目录
+    ├── code-reviewer/
+    └── git-commit/
 ```
 
 ## 快速开始
 
-在 `skills/` 目录下创建你的技能目录，并按照 `AGENTS.md` 中定义的规范编写 `SKILL.md`。同时将相同的技能副本放置到 `.opencode/skills/` 目录下。
+在 `skills/` 目录下创建你的技能目录，并按照 `AGENTS.md` 中定义的规范编写 `SKILL.md`。
 
 ### 创建技能的基本步骤
 
 1. 确认技能的用途（purpose）与触发时机（trigger）
 2. 在 `skills/<skill-name>/` 下编写 `SKILL.md`
 3. 根据需要添加 commands、scripts、references、assets 等资源
-4. 将完整技能目录同步复制到 `.opencode/skills/<skill-name>/`
 
 ## 详细规范
 
