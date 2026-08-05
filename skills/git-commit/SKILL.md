@@ -18,7 +18,7 @@ Enforce a consistent format and quality bar for git commit messages so that hist
 ## Commit Message Format
 
 ```
-<type>(<scope>): <subject> (<branch-name>)
+<type>(<scope>): <subject> (#<branch-name>)
 
 ## Changes
 - <feature>: <description>
@@ -37,7 +37,7 @@ Enforce a consistent format and quality bar for git commit messages so that hist
 Branch `feat/user-auth`:
 
 ```
-feat(auth): integrate JWT authentication (feat/user-auth)
+feat(auth): integrate JWT authentication (#feat/user-auth)
 
 ## Changes
 - Login: add JWT signing and verification middleware
@@ -74,8 +74,8 @@ Indicates the area of the codebase affected. Use a noun, e.g. `auth`, `api`, `ui
 
 ### Branch Name (required)
 
-- Placed at the end of the subject line, wrapped in half-width parentheses: `(<branch-name>)`.
-- Full position: `<type>(<scope>): <subject> (<branch-name>)`.
+- Placed at the end of the subject line, wrapped in half-width parentheses and prefixed with `#`: `(#<branch-name>)`.
+- Full position: `<type>(<scope>): <subject> (#<branch-name>)`.
 - Obtain via `git branch --show-current`.
 
 ### Subject (required)
@@ -109,7 +109,7 @@ If the commit introduces breaking changes, both of the following are required:
 Example:
 
 ```
-feat(api)!: restructure user endpoints (feat/api-v2)
+feat(api)!: restructure user endpoints (#feat/api-v2)
 
 ## Changes
 - User API: response shape changed from flat to nested object
@@ -140,14 +140,14 @@ BREAKING CHANGE: the `name` field on `/users` has moved to `profile.name`; clien
 | `fix bug`                                        | Missing type, scope, and branch name |
 | `feat: add login`                                | Missing branch name                  |
 | `feat: changed 3 files`                          | Listed by file, not by feature       |
-| `feat: integrate login [feat/login]`             | Branch name should be at the end, in parentheses |
+| `feat: integrate login [feat/login]`             | Branch name should be at the end, in parentheses with `#` prefix |
 | `feat: xxx [main]`                               | Should not commit directly to `main` |
 
 | Good                                                    |
 | ------------------------------------------------------- |
-| `feat(auth): integrate JWT auth (feat/login)`           |
-| `fix(api): fix null pointer causing 500 (fix/user-crash)` |
-| `refactor(core): extract shared cache layer (refactor/store)` |
+| `feat(auth): integrate JWT auth (#feat/login)`           |
+| `fix(api): fix null pointer causing 500 (#fix/user-crash)` |
+| `refactor(core): extract shared cache layer (#refactor/store)` |
 
 ## Notes
 
