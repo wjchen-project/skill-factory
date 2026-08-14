@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: Triggered when the user is about to run git commit, asks to generate or normalize a commit message, inquires about commit message format, or any context involving Conventional Commits and the branch-name constraint.
+description: Triggered when the user is about to run git commit, asks to generate or normalize a commit message, inquires about commit message format, or any context involving Conventional Commits.
 ---
 
 # Git Commit Skill
@@ -8,6 +8,8 @@ description: Triggered when the user is about to run git commit, asks to generat
 ## Purpose
 
 Enforce a consistent format and quality bar for git commit messages so that history is clear, traceable, and can be used to auto-generate changelogs.
+
+> Branch management (e.g. branch naming, protected branches, pushing) is out of scope. The user handles branch-related decisions themselves; this skill focuses only on the commit message and its format.
 
 ## When to Trigger
 
@@ -18,7 +20,7 @@ Enforce a consistent format and quality bar for git commit messages so that hist
 ## Commit Message Format
 
 ```
-<type>(<scope>): <subject> (#<branch-name>)
+<type>(<scope>): <subject>
 
 ## Changes
 - <feature>: <description>
@@ -34,10 +36,8 @@ Enforce a consistent format and quality bar for git commit messages so that hist
 
 ### Example
 
-Branch `feat/user-auth`:
-
 ```
-feat(auth): integrate JWT authentication (#feat/user-auth)
+feat(auth): integrate JWT authentication
 
 ## Changes
 - Login: add JWT signing and verification middleware
@@ -72,15 +72,9 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 Indicates the area of the codebase affected. Use a noun, e.g. `auth`, `api`, `ui`, `deps`, `config`.
 
-### Branch Name (required)
-
-- Placed at the end of the subject line, wrapped in half-width parentheses and prefixed with `#`: `(#<branch-name>)`.
-- Full position: `<type>(<scope>): <subject> (#<branch-name>)`.
-- Obtain via `git branch --show-current`.
-
 ### Subject (required)
 
-- No more than 50 characters (excluding type, scope, and branch name).
+- No more than 50 characters (excluding type and scope).
 - Use the project's primary language.
 - Start with a verb; describe the core goal of the commit, no granular details.
 
@@ -109,7 +103,7 @@ If the commit introduces breaking changes, both of the following are required:
 Example:
 
 ```
-feat(api)!: restructure user endpoints (#feat/api-v2)
+feat(api)!: restructure user endpoints
 
 ## Changes
 - User API: response shape changed from flat to nested object
@@ -125,33 +119,29 @@ BREAKING CHANGE: the `name` field on `/users` has moved to `profile.name`; clien
 
 ## Execution Steps
 
-1. Get the current branch: `git branch --show-current`.
-2. Inspect staged and unstaged changes: `git status` and `git diff --stat`.
-3. If there are unstaged changes, prompt the user to `git add` first.
-4. Identify `type` and `scope` from the changes.
-5. Generate the commit message using the template above.
-6. Commit: `git commit -m "..."` (for multi-line messages use multiple `-m` flags or a heredoc).
-7. Report the result (commit hash, branch name).
+1. Inspect staged and unstaged changes: `git status` and `git diff --stat`.
+2. If there are unstaged changes, prompt the user to `git add` first.
+3. Identify `type` and `scope` from the changes.
+4. Generate the commit message using the template above.
+5. Commit: `git commit -m "..."` (for multi-line messages use multiple `-m` flags or a heredoc).
+6. Report the result (commit hash).
 
 ## Bad vs Good Examples
 
-| Bad                                              | Issue                                |
-| ------------------------------------------------ | ------------------------------------ |
-| `fix bug`                                        | Missing type, scope, and branch name |
-| `feat: add login`                                | Missing branch name                  |
-| `feat: changed 3 files`                          | Listed by file, not by feature       |
-| `feat: integrate login [feat/login]`             | Branch name should be at the end, in parentheses with `#` prefix |
-| `feat: xxx [main]`                               | Should not commit directly to `main` |
+| Bad                                          | Issue                                    |
+| -------------------------------------------- | ---------------------------------------- |
+| `fix bug`                                    | Missing type and scope                   |
+| `feat: add login`                            | Missing scope (when applicable)          |
+| `feat: changed 3 files`                      | Listed by file, not by feature           |
 
 | Good                                                    |
 | ------------------------------------------------------- |
-| `feat(auth): integrate JWT auth (#feat/login)`           |
-| `fix(api): fix null pointer causing 500 (#fix/user-crash)` |
-| `refactor(core): extract shared cache layer (#refactor/store)` |
+| `feat(auth): integrate JWT auth`                        |
+| `fix(api): fix null pointer causing 500`                |
+| `refactor(core): extract shared cache layer`            |
 
 ## Notes
 
-- Do not commit directly on protected branches (`main` / `master`); warn the user if detected.
 - `type` must be lowercase.
 - Do not mix multiple types in a single commit; split into multiple commits if needed.
 - For multi-line messages in the shell, mind quote escaping; use `\n` carefully.
